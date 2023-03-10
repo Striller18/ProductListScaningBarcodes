@@ -16,6 +16,11 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
+
+  --green: '#75BA75';
+  --white: '#eeeeee';
+  --grey: '#949494';
+  --black: '#363636';
 }
 
 a {
