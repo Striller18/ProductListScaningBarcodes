@@ -2,18 +2,19 @@ import { MouseEventHandler, useState, ReactElement} from 'react';
 import Nav  from "./components/Nav";
 import './css/App.css';
 import Lists from './pages/Lists';
+import Scan from './pages/Scan';
 import db from './assets/dbTmp.json';
 
 function App() {
   const [count, setCount] = useState(0)
-  const [actualPage, setActualPage] = useState("lists")
-  const [lastPage, setLastPage] = useState("")
+  const [actualPage, setActualPage] = useState<string>("lists")
+  const [lastPage, setLastPage] = useState<string>("")
 
 
   const pages: Record<string, ReactElement>= {
     lists: <Lists lists={db.lists}/>,
     user: <h1>User</h1>,
-    scan: <h1>Scan</h1>,
+    scan: <Scan></Scan>,
   }
 
   const handlerChangeNav = (newPage: string) => {
