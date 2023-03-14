@@ -1,45 +1,49 @@
 import React, {useState, useRef} from 'react';
 import Quagga from "quagga-scanner";
 
-const Scan = (): JSX.Element => {
+const Scan = () => {
     const [code, setCode] = useState<string>('');
-    const [src, setSrc] = useState<any>(null);
+    const [mediaDevices, setMediaDevices] = useState<MediaDeviceInfo[]>([]);
+    const [actualDeviceId, setActualDeviceId] = useState<string>("");
+
     const videoRef = useRef<HTMLVideoElement>(document.createElement("video"));
 
-    const camPermission = {audio:false, video: true};
-    const mediaDevices = [MediaStream];
-    console.log(mediaDevices);
+    navigator.mediaDevices.enumerateDevices().then((data)=> setMediaDevices(data));
     
-    navigator.mediaDevices.getUserMedia(camPermission)
-        .then((stream)=>{
-            const videoTracks = stream.getVideoTracks();
-            console.log("Got stream with constraints:", camPermission);
-            console.log(`Using video device: ${videoTracks[0].label}`);
-            stream.onremovetrack = () => {
-                console.log("Stream ended");
-            };
+    const getOption = function(device: MediaDeviceInfo){
+        if(device.kind === "videoinput"){
+            if(actualDeviceId === "") setVideoDevice(device.deviceId);
 
-            videoRef.current.srcObject = stream;
-            
-        })
+            return <option key={device.deviceId} value={device.deviceId}>{device.label}</option>
+        }
+    }
+
+    const setVideoDevice = function(id: string){
+        setActualDeviceId(id)
+        navigator.mediaDevices.getUserMedia({video: {deviceId: id}})
+        .then((stream)=> videoRef.current.srcObject = stream)
         .catch((error) => {
             if (error.name === "ConstraintNotSatisfiedError") {
-              console.error("Resolution is not supported");
+                console.error("Resolution is not supported");
             } else if (error.name === "PermissionDeniedError") {
-              console.error(
+                console.error(
                 "You need to grant this page permission to access your camera and microphone."
-              );
+                );
             } else {
-              console.error(`getUserMedia error: ${error.name}`, error);
+                console.error(`getUserMedia error: ${error.name}`, error);
             }
         });
-    
+    }
 
     return (
-        <div id="scanner">
-            <select name="" id=""></select>
+        <div className='flex'>
+            <select className='rounded-full px-4 h-8 bg-darkGrey' onChange={(event)=> setVideoDevice(event.target.value)}>
+            {
+                mediaDevices.map(getOption)
+            }
+            </select>
             <video ref={videoRef} autoPlay={true}></video>
-            <p> {code} </p>
+            <p> Code: {code} </p>
         </div>
     )
 }
