@@ -1,11 +1,11 @@
-import React, {useState, useRef, useEffect} from 'react';
+import React, {useState, useRef, useEffect, Component} from 'react';
 import Quagga from "quagga-scanner";
 import '../css/Scanner.css'
 
 const Scanner = (props: {deviceId: string}) => {
     const [code, setCode] = useState<string>('');
     const scannerRef = useRef<HTMLDivElement>(document.createElement("div"));
-
+    
     useEffect(() => {
         console.log("HOLA")
         Quagga.init({

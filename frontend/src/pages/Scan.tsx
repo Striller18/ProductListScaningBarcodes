@@ -34,10 +34,8 @@ const Scan = () => {
                 {mediaDevices.map(getOption)}
             </select>
             <div id="interactive" className="viewport"/>
-            <Scanner deviceId={actualDeviceId}/>
-
-
-            <p>{actualDeviceId}</p>
+            <Scanner key={actualDeviceId} deviceId={actualDeviceId}/>
+            {/* <p>{actualDeviceId}</p> */}
         </div>
     )
 }
