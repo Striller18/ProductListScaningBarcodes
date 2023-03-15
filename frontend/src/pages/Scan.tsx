@@ -1,8 +1,8 @@
 import React, {useState, useRef} from 'react';
 import Quagga from "quagga-scanner";
+import Scanner from '../components/Scanner';
 
 const Scan = () => {
-    const [code, setCode] = useState<string>('');
     const [mediaDevices, setMediaDevices] = useState<MediaDeviceInfo[]>([]);
     const [actualDeviceId, setActualDeviceId] = useState<string>("");
     const videoRef = useRef<HTMLVideoElement>(document.createElement("video"));
@@ -27,32 +27,17 @@ const Scan = () => {
             else console.error(`getUserMedia error: ${error.name}`, error)
         });
     }
-
-    // Quagga.init({
-    //     inputStream : {
-    //       name : "Live",
-    //       type : "LiveStream",
-    //       target: document.createElement("div")  // Or '#yourElement' (optional)
-    //     },
-    //     decoder : {
-    //       readers : ["code_128_reader"]
-    //     }
-    // }, function(err) {
-    //       if (err) {
-    //           console.log(err);
-    //           return
-    //       }
-    //       console.log("Initialization finished. Ready to start");
-    //       Quagga.start();
-    // });
-
+    
     return (
         <div className='flex flex-col gap-5 w-full'>
             <select className='rounded-full px-4 h-8 bg-darkGrey' onChange={(event)=> setVideoDevice(event.target.value)}>
                 {mediaDevices.map(getOption)}
             </select>
-            <video className='rounded-md bg-darkGrey' id="cam" ref={videoRef} autoPlay={true}>No source</video>
-            <p> Code: {code} </p>
+            <div id="interactive" className="viewport"/>
+            <Scanner deviceId={actualDeviceId}/>
+
+
+            <p>{actualDeviceId}</p>
         </div>
     )
 }
