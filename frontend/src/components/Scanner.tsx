@@ -3,15 +3,15 @@ import Quagga from "quagga-scanner";
 import '../css/Scanner.css'
 
 const Scanner = (props: {deviceId: string}) => {
-    const [code, setCode] = useState<string>('');
-    const scannerRef = useRef<HTMLDivElement>(document.createElement("div"));
-
+    const [isScannerActive, setIsScannerActive] = useState(false);
+    const [scannerResult, setScannerResult] = useState<string>("");
+    
     useEffect(() => {
-        console.log("HOLA")
+        //Inicializar Quagga
         Quagga.init({
             inputStream : {
                 name : "Live",
-                type : "LiveStream", // Or '#yourElement' (optional)
+                type : "LiveStream",
                 constraints: {
                     deviceId: props.deviceId
                 }
@@ -24,27 +24,30 @@ const Scanner = (props: {deviceId: string}) => {
                 ]
             }
         }, function(err) {
-            console.log("before error")
             if (err) {
-                console.error(err);
-                return
+                return console.error(err);
             }
             console.log("Initialization finished. Ready to start");
             Quagga.start();
+            setIsScannerActive(true);
         });
 
         Quagga.onDetected(function (result) {
             console.log("Barcode detected and processed : [" + result.codeResult.code + "]", result);
+            setScannerResult(result.codeResult.code);
         });
-    },[])
-    
 
-    
+        // return () => {
+        //     Quagga.stop();
+        //     setIsScannerActive(false);
+        // };
+    },[])
     
     return (
         <div className='flex flex-col gap-5 w-full'>
-            <p> Code: {code} </p>
+            <p>{props.deviceId}</p>
         </div>
+        
     )
 }
 
