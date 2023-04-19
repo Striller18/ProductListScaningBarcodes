@@ -1,10 +1,14 @@
-import React, {useState, useRef} from 'react';
+import React, {useState, useRef, useEffect} from 'react';
+import Quagga from "quagga-scanner";
 import Scanner from '../components/Scanner';
 
 const Scan = () => {
     const [mediaDevices, setMediaDevices] = useState<MediaDeviceInfo[]>([]);
     const [actualDeviceId, setActualDeviceId] = useState<string>("");
     const videoRef = useRef<HTMLVideoElement>(document.createElement("video"));
+
+    const [isScannerActive, setIsScannerActive] = useState(false);
+    const [scannerResult, setScannerResult] = useState<string>("");
 
     navigator.mediaDevices.enumerateDevices().then((data)=> setMediaDevices(data));
     
@@ -28,13 +32,51 @@ const Scan = () => {
         });
     }
     
+    useEffect(() => {
+        //Inicializar Quagga
+        Quagga.init({
+            inputStream : {
+                name : "Live",
+                type : "LiveStream",
+                constraints: {
+                    deviceId: actualDeviceId
+                }
+            },
+            decoder: {
+                readers: [
+                    "code_128_reader",
+                    "ean_reader",
+                    "ean_8_reader"
+                ]
+            }
+        }, function(err) {
+            if (err) {
+                return console.error(err);
+            }
+            console.log("Initialization finished. Ready to start");
+            Quagga.start();
+            setIsScannerActive(true);
+        });
+
+        Quagga.onDetected(function (result) {
+            console.log("Barcode detected and processed : [" + result.codeResult.code + "]", result);
+            setScannerResult(result.codeResult.code);
+        });
+
+        // return () => {
+        //     Quagga.stop();
+        //     setIsScannerActive(false);
+        // };
+    },[])
+
     return (
         <div className='flex flex-col gap-5 w-full'>
             <select className='rounded-full px-4 h-8 bg-darkGrey' onChange={(event)=> setVideoDevice(event.target.value)}>
                 {mediaDevices.map(createOptionElement)}
             </select>
             <div id="interactive" className="viewport"/>
-            <Scanner key={actualDeviceId} deviceId={actualDeviceId}/>
+            <p>{scannerResult}</p>
+            {/* <Scanner key={actualDeviceId} deviceId={actualDeviceId}/> */}
         </div>
     )
 }
