@@ -67,6 +67,7 @@ const Scan = () => {
         //     Quagga.stop();
         //     setIsScannerActive(false);
         // };
+        console.log(import.meta.env.APIKEY_PRODUCT_LIST)
     },[])
 
     return (
