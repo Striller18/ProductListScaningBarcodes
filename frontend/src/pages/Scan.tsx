@@ -35,7 +35,6 @@ const Scan = () => {
             </select>
             <div id="interactive" className="viewport"/>
             <Scanner key={actualDeviceId} deviceId={actualDeviceId}/>
-            {/* <p>{actualDeviceId}</p> */}
         </div>
     )
 }

@@ -45,9 +45,7 @@ const Scanner = (props: {deviceId: string}) => {
     
     return (
         <div className='flex flex-col gap-5 w-full'>
-            <p>{props.deviceId}</p>
         </div>
-        
     )
 }
 
