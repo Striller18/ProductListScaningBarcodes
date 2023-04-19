@@ -7,7 +7,7 @@ import db from './assets/dbTmp.json';
 
 function App() {
   const [count, setCount] = useState(0)
-  const [actualPage, setActualPage] = useState<string>("lists")
+  const [actualPage, setActualPage] = useState<string>("scan")
   const [lastPage, setLastPage] = useState<string>("")
 
 
