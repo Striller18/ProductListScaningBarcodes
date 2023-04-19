@@ -10,9 +10,10 @@ const Scan = () => {
     
     const createOptionElement = function(device: MediaDeviceInfo){//Funcion para rellenar el selector de dispositivos
         if(device.kind === "videoinput"){
-            if(actualDeviceId === "") setVideoDevice(device.deviceId);
-
-            return <option key={device.deviceId} value={device.deviceId}>{device.label}</option>
+            if(actualDeviceId === "") {
+                setVideoDevice(device.deviceId);
+                return <option key={device.deviceId} value={device.deviceId} selected>{device.label}</option>
+            }else return <option key={device.deviceId} value={device.deviceId}>{device.label}</option>
         }
     }
 
