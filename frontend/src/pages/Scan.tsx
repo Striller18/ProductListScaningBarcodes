@@ -1,5 +1,4 @@
 import React, {useState, useRef} from 'react';
-import Quagga from "quagga-scanner";
 import Scanner from '../components/Scanner';
 
 const Scan = () => {
@@ -9,7 +8,7 @@ const Scan = () => {
 
     navigator.mediaDevices.enumerateDevices().then((data)=> setMediaDevices(data));
     
-    const getOption = function(device: MediaDeviceInfo){
+    const createOptionElement = function(device: MediaDeviceInfo){//Funcion para rellenar el selector de dispositivos
         if(device.kind === "videoinput"){
             if(actualDeviceId === "") setVideoDevice(device.deviceId);
 
@@ -31,13 +30,10 @@ const Scan = () => {
     return (
         <div className='flex flex-col gap-5 w-full'>
             <select className='rounded-full px-4 h-8 bg-darkGrey' onChange={(event)=> setVideoDevice(event.target.value)}>
-                {mediaDevices.map(getOption)}
+                {mediaDevices.map(createOptionElement)}
             </select>
             <div id="interactive" className="viewport"/>
             <Scanner deviceId={actualDeviceId}/>
-
-
-            <p>{actualDeviceId}</p>
         </div>
     )
 }
