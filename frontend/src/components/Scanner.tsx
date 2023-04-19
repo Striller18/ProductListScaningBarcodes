@@ -1,4 +1,4 @@
-import React, {useState, useRef, useEffect} from 'react';
+import React, {useState, useRef, useEffect, Component} from 'react';
 import Quagga from "quagga-scanner";
 import '../css/Scanner.css'
 
