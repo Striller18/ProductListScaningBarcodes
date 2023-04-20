@@ -10,7 +10,7 @@ const Scan = () => {
     const [isScannerActive, setIsScannerActive] = useState(false);
     const [scannerResult, setScannerResult] = useState<string>("");
 
-    navigator.mediaDevices.enumerateDevices().then((data)=> setMediaDevices(data));
+    // navigator.mediaDevices.enumerateDevices().then((data)=> setMediaDevices(data));
     
     const createOptionElement = function(device: MediaDeviceInfo){//Funcion para rellenar el selector de dispositivos
         if(device.kind === "videoinput"){
@@ -67,6 +67,7 @@ const Scan = () => {
         //     Quagga.stop();
         //     setIsScannerActive(false);
         // };
+
         console.log(import.meta.env.APIKEY_PRODUCT_LIST)
     },[])
 
